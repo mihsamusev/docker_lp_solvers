@@ -3,7 +3,7 @@ name = "lp_problem"
 version = "0.1.0"
 description = ""
 authors = [
-  {name = "Mihhail Samusev", email = "" }
+  {name = "Mihhail Samusev", email = "mhs@bluepp.dk" }
 ]
 requires-python = ">=3.10"
 readme = "README.md"
@@ -14,6 +14,9 @@ dependencies = [
     "python-decouple",
 ]
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lp_problem"]
 
 [build-system]
 requires = ["setuptools", "wheel"]
