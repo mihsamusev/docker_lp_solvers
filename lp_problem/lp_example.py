@@ -23,7 +23,7 @@ from pyomo.environ import (
     SolverFactory,
 )
 
-
+SOLVER_NAME = "SCIP"
 def build_model():
     model = ConcreteModel()
 
@@ -63,7 +63,7 @@ def run():
     for name, _ in model_constraints.items():
         print(name)
 
-    solver = SolverFactory("scip")
+    solver = SolverFactory(SOLVER_NAME)
     solver.solve(model, tee=True)
     describe_model(model)
 
