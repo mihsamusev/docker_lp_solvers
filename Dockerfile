@@ -1,9 +1,10 @@
 FROM ghcr.io/mihsamusev/docker_lp_solvers
 
-WORKDIR /src
+COPY .github/workflows/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+COPY . /app
+WORKDIR /app
 
-COPY . .
+RUN python -m pip install --no-cache-dir . | rm -rf build
 
-RUN python -m pip install --no-cache-dir .
-
-ENTRYPOINT ["python", "lp_problem/lp_example.py"]
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -1,4 +1,4 @@
-name: Create and publish image
+name: Run tests in docker
 
 on:
   push:
@@ -89,7 +89,7 @@ jobs:
         run: docker pull ${{ env.LATEST_IMAGE_PATH }}  && docker image save ${{ env.LATEST_IMAGE_PATH }} --output ${{ env.CACHE_IMAGE_NAME }}
 
       - name: Load base image from cache
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit == 'true'
         run: docker image load --input ${{ env.CACHE_IMAGE_NAME }}
 
       - name: Build and test
