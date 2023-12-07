@@ -54,6 +54,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Cache solvers image
+        run: |
+          echo "gonna cache if didnt"
+
 
   build-and-run-problem:
     needs: build-and-push-solvers-image
@@ -67,5 +71,5 @@ jobs:
 
       - name: donker pull the good stuff
         run: | 
-          docker build .
-          docker run
+          docker build -t test .
+          docker run --rm test
