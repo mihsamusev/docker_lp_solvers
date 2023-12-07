@@ -37,8 +37,9 @@ jobs:
 
       - name: Check solvers image
         id: check_modification
+        # grep command return code is 0 if match found
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'solvers/' > /dev/nill; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'solvers/'; then
             echo "folder_modified=true >> $GITHUB_OUTPUT"
           else
             echo "folder_modified=false >> $GITHUB_OUTPUT"
@@ -65,4 +66,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: donker pull the good stuff
-        run: docker pull ghcr.io/mihsamusev/docker_lp_solvers:latest
+        run: | 
+          docker build .
+          docker run
