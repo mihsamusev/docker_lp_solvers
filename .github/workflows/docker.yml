@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  LATEST_IMAGE_PATH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
 jobs:
   build-and-push-solvers-image:
@@ -64,12 +65,33 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      CACHE_PATH: ci/cache/docker/solvers
+      CACHE_IMAGE_NAME: ci/cache/docker/solvers/solvers.tar
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: donker pull the good stuff
+      - name: Cache solvers image
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: solvers
+
+      - name: Create cache directory
+        run: mkdir -p ${{ env.CACHE_PATH }}
+
+      - name: Add base image to cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: docker pull ${{ env.LATEST_IMAGE_PATH }} && docker image save ${{ env.LATEST_IMAGE_PATH }} --output ${{ env.CACHE_IMAGE_NAME }}
+
+      - name: Load base image from cache
+        if: steps.cache-docker-miniconda.outputs.cache-hit == 'true'
+        run: docker image load --input ${{ env.CACHE_IMAGE_NAME }}
+
+      - name: Build and test
         run: | 
           docker build -t test .
           docker run --rm test

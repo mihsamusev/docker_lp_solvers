@@ -1,4 +1,4 @@
-FROM ghcr.io/mihsamusev/docker_lp_solvers:latest
+FROM ghcr.io/mihsamusev/docker_lp_solvers
 
 WORKDIR /src
 
