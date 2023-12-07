@@ -3,7 +3,6 @@ name: Create and publish image
 on:
   push:
     branches: ["main"]
-    paths: ["solvers/**", ".github/workflows/**"]
   workflow_dispatch:
     
 env:
@@ -11,8 +10,9 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  build-and-push-solvers-image:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && contains(github.event.head_commit.modified, 'solvers') }}
     permissions:
       contents: read
       packages: write
@@ -43,3 +43,17 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+
+  build-and-run-problem:
+    needs: build-and-push-solvers-image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: donker pull the good stuff
+        run: docker pull ghcr.io/mihsamusev/docker_lp_solvers:latest

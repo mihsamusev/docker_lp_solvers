@@ -23,7 +23,9 @@ from pyomo.environ import (
     SolverFactory,
 )
 
-SOLVER_NAME = "SCIP"
+SOLVER_NAME = "scip"
+
+
 def build_model():
     model = ConcreteModel()
 

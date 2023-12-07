@@ -1,30 +1,21 @@
 Example of build / run and publish of a simple parametrized python container
 
-Build locally
+The base image with solvers described in `solvers/Dockerfile` can be found at https://github.com/mihsamusev/docker_lp_solvers/pkgs/container/docker_lp_solvers
+
+
+### Build env for LP example image
 ```sh
-docker build -t example .
+docker build -t lp_problem .
 ```
 
-Run locally and submit env variables
+### Run
+Run the container and then LP example in one go
 ```sh
-docker run -it --rm example
-docker run -it --rm -e BASE_URL=http://example.com example
+docker run -it --rm lp_problem
 ```
 
-Create `.env` file with the following content
-```txt
-PORT=420
-BASE_URL=http://based.com
-```
-
-Run locally 
+Enter the container env and then LP example interactively
 ```sh
-docker run -it --rm example
-docker run -it --rm --env-file .env example
-```
-
-Pull and run published
-```sh
-docker pull ghcr.io/mihsamusev/docker_actions_example:main
-docker run -it --rm -e BASE_URL=http://some_url ghcr.io/mihsamusev/docker_actions_example:main
+docker run -it --rm lp_problem /bin/bash
+python lp_problem/lp_example.py
 ```
