@@ -12,6 +12,8 @@ env:
 jobs:
   build-and-push-solvers-image:
     runs-on: ubuntu-latest
+    outputs:
+      has_run: ${{ steps.check.outputs.run }}
     if: ${{ github.event_name == 'push' && contains(github.event.head_commit.modified, 'solvers') }}
     permissions:
       contents: read
@@ -47,6 +49,7 @@ jobs:
 
   build-and-run-problem:
     needs: build-and-push-solvers-image
+    if: needs.optional_job.outputs.has_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
