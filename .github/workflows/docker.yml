@@ -8,7 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  LATEST_IMAGE_PATH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
 jobs:
   build-and-push-solvers-image:
@@ -81,11 +80,12 @@ jobs:
           key: solvers
 
       - name: Create cache directory
+        if: steps.cache.outputs.cache-hit != 'true'
         run: mkdir -p ${{ env.CACHE_PATH }}
 
       - name: Add base image to cache
         if: steps.cache.outputs.cache-hit != 'true'
-        run: docker pull ${{ env.LATEST_IMAGE_PATH }} && docker image save ${{ env.LATEST_IMAGE_PATH }} --output ${{ env.CACHE_IMAGE_NAME }}
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} && docker image save ${{ env.LATEST_IMAGE_PATH }} --output ${{ env.CACHE_IMAGE_NAME }}
 
       - name: Load base image from cache
         if: steps.cache-docker-miniconda.outputs.cache-hit == 'true'
