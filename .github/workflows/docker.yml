@@ -38,10 +38,10 @@ jobs:
       - name: Check solvers image
         id: check_modification
         run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'solvers/'; then
-            echo "::set-output name=folder_modified::true"
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'solvers/' > /dev/nill; then
+            echo "folder_modified=true >> $GITHUB_OUTPUT"
           else
-            echo "::set-output name=folder_modified::false"
+            echo "folder_modified=false >> $GITHUB_OUTPUT"
           fi
 
       - name: Build and push
