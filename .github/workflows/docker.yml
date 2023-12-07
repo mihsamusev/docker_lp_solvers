@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  LATEST_IMAGE_PATH: ghcr.io/${{ github.repository }}
 
 jobs:
   build-and-push-solvers-image:
@@ -67,7 +68,6 @@ jobs:
     env:
       CACHE_PATH: ci/cache/docker/solvers
       CACHE_IMAGE_NAME: ci/cache/docker/solvers/solvers.tar
-      LATEST_IMAGE_PATH: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     steps:
       - name: Checkout
