@@ -7,4 +7,4 @@ WORKDIR /app
 
 RUN python -m pip install --no-cache-dir . | rm -rf build
 
-ENTRYPOINT ["app/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
